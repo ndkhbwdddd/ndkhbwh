@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 开发机环境配置 -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         " >
+         
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	
+	<!-- 连接池 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+	    <property name="maxIdle" value="${redis.maxIdle}" />  
+	    <property name="maxTotal" value="${redis.maxTotal}" /> 
+	    <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+	    <property name="testOnBorrow" value="${redis.testOnBorrow}" />  
+    </bean> 
+	<!-- 数据源 -->
+	<bean id="connectionFactory0" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"  
+    	p:host-name="${redis.host0}" 
+    	p:port="${redis.port0}" 
+    	p:password="${redis.pass0}"  
+    	p:pool-config-ref="poolConfig"/> 
+    	
+    <!-- 数据源 -->
+	<bean id="connectionFactory1" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"  
+    	p:host-name="${redis.host1}" 
+    	p:port="${redis.port1}" 
+    	p:password="${redis.pass1}"  
+    	p:pool-config-ref="poolConfig"/>
+    	
+	<!-- 模板-->
+	<bean id="redisTemplate0" class="org.springframework.data.redis.core.RedisTemplate">  
+    	<property name="connectionFactory"   ref="connectionFactory0" />
+    </bean>
+    <bean id="redisTemplate1" class="org.springframework.data.redis.core.RedisTemplate">  
+    	<property name="connectionFactory"   ref="connectionFactory1" />
+    </bean>	
+
+	<!-- 实体类-->
+	<bean id="redisDAO" class="com.yitianyike.calendar.appserver.dao.impl.RedisDAOImpl">
+	</bean>
+	
+</beans>  

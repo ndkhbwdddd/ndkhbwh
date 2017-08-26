@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 开发机环境配置 component-scan功能：jdk1.8情况下，需要在pom.xml中配置springframework4.0以上的jar包，jdk1.6(7),没有这个要求 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context   
+ 	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+ 	http://www.springframework.org/schema/task  
+	http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<!-- <context:component-scan base-package="com.yitianyike.calendar.appserver.bo,com.yitianyike.calendar.appserver.dao,com.yitianyike.calendar.appserver.service" 
+		/> -->
+
+	<task:annotation-driven />
+	<context:annotation-config />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<!-- 数据源 -->
+	<bean id="dataSourceRegister" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.register.url}" />
+		<property name="username" value="${jdbc.register.username}" />
+		<property name="password" value="${jdbc.register.password}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+	</bean>
+
+
+	<!-- JDBC模板 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref local="dataSourceRegister" />
+		</property>
+	</bean>
+
+	<bean id="namedParameterJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSourceRegister" />
+	</bean>
+	<!-- <bean id="dataDAO" class="com.yitianyike.calendar.appserver.dao.impl.DataDAOImpl"> 
+		<property name="jdbcTemplate"> <ref local="jdbcTemplate" /> </property> <property 
+		name="namedParameterJdbcTemplate"> <ref local="namedParameterJdbcTemplate" 
+		/> </property> </bean> -->
+
+	<bean id="registerDAO"
+		class="com.yitianyike.calendar.appserver.dao.impl.RegisterDAOImpl">
+		<property name="jdbcTemplate">
+			<ref local="jdbcTemplate" />
+		</property>
+		<property name="namedParameterJdbcTemplate">
+			<ref local="namedParameterJdbcTemplate" />
+		</property>
+	</bean>
+</beans>  
