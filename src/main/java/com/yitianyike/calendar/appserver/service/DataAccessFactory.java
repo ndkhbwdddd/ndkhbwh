@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.yitianyike.calendar.appserver.bo.AllSubscribeListBO;
+import com.yitianyike.calendar.appserver.bo.BindControlDriveCityBO;
 import com.yitianyike.calendar.appserver.bo.BindPushBO;
 import com.yitianyike.calendar.appserver.bo.CurrentDataBO;
 import com.yitianyike.calendar.appserver.bo.DeleteSubscribedListBO;
@@ -78,6 +79,8 @@ public class DataAccessFactory {
 		dataHolder.put("bindPushBO", (BindPushBO) mysqlUserCtxXml.getBean("bindPushBO"));
 		dataHolder.put("unbindPushBO", (UnbindPushBO) mysqlUserCtxXml.getBean("unbindPushBO"));
 		dataHolder.put("currentDataBO", (CurrentDataBO) mysqlUserCtxXml.getBean("currentDataBO"));
+		dataHolder.put("bindControlDriveCityBO",
+				(BindControlDriveCityBO) mysqlUserCtxXml.getBean("bindControlDriveCityBO"));
 		// TODO
 		log.info("init Data Access Objects[Mysql User] over.");
 	}

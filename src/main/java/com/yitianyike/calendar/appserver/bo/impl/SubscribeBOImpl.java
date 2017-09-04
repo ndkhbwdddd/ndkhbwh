@@ -30,6 +30,7 @@ import com.yitianyike.calendar.appserver.model.response.AppResponse;
 import com.yitianyike.calendar.appserver.service.DBContextHolder;
 import com.yitianyike.calendar.appserver.service.DataAccessFactory;
 import com.yitianyike.calendar.appserver.util.CalendarUtil;
+import com.yitianyike.calendar.appserver.util.DateUtil;
 import com.yitianyike.calendar.appserver.util.ParameterValidation;
 import com.yitianyike.calendar.appserver.util.PushRet;
 import com.yitianyike.calendar.appserver.util.PushUtil;
@@ -172,9 +173,11 @@ public class SubscribeBOImpl implements SubscribeBO {
 				if (downzipUrl == null) {
 					responseMap.put("downzip_status", 0);
 					responseMap.put("downzip_url", "");
+					responseMap.put("end_data", "");
 				} else {
 					responseMap.put("downzip_status", 1);
 					responseMap.put("downzip_url", downzipUrl);
+					responseMap.put("end_data", DateUtil.getYearEndLongTime());
 				}
 				//
 				// Map<String, String> valueMap = redisDAO.hGetAll(aidKey);

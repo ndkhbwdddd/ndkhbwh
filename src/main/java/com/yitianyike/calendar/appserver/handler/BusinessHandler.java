@@ -82,57 +82,62 @@ public class BusinessHandler extends SimpleChannelInboundHandler<HttpObject> {
 				new TestHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/register".equals(accessPath)) {
 
 				new RegisterHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/login".equals(accessPath)) {
 
 				new LoginHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/subscribe".equals(accessPath)) {
 
 				new SubscribeHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/unSubscribed".equals(accessPath)) {
 
 				new UnSubscribeHandler(ctx, parmMap, content).process();
 				return;
-				//v1
+				// v1
 			} else if ("/allSubscribeList".equals(accessPath)) {
 
 				new AllSubscribeListHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/recommendSubscribeList".equals(accessPath)) {
 
 				new RecommendSubscribeListHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/tabsList".equals(accessPath)) {
 
 				new TabsListHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/subscribedList".equals(accessPath)) {
 
 				new SubscribedListHandler(ctx, parmMap, content).process();
 				return;
 
-				//v1
+				// v1
 			} else if ("/currentData".equals(accessPath)) {
 
 				new CurrentDataHandler(ctx, parmMap, content).process();
+				return;
+				// v1
+			} else if ("/bindControlDriveCity".equals(accessPath)) {
+
+				new BindControlDriveCityHandler(ctx, parmMap, content).process();
 				return;
 			} else if ("/incrementData".equals(accessPath)) {
 

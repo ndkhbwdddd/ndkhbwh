@@ -74,63 +74,63 @@ public class CurrentDataBOImpl implements CurrentDataBO {
 
 				for (String aid : list) {
 					String datatype = aidTypes.get(aid);
-					// 非场景
-					if (datatype.equals("1")) {// 限行
+					if ("1".equals(datatype)) {// 限行
 						String usercity = uidMap.get("usercity");
 						if (usercity == null)
 							valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, "-1");
 						else
 							valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, usercity);
-					} else if (datatype.equals("2")) {// 星座
+					} else if ("2".equals(datatype) || "3".equals(datatype) || "4".equals(datatype)
+							|| "5".equals(datatype) || "8".equals(datatype) || "9".equals(datatype)
+							|| "10".equals(datatype) || "66".equals(datatype)) {
 						valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, aid);
-					} else if (datatype.equals("3")) {// 历史上的今天
-						valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, aid);
-					} else if (datatype.equals("4")) {// 体育
-						valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, aid);
-					} else if (datatype.equals("5")) {// 资讯
-
-					} else if (datatype.equals("6")) {// 场景
-
 					}
 				}
 
-//				String currentDate = DateUtil.getCurrentDate();
-//				for (String aid : list) {
-//					String aidKey = uidMap.get("channel") + "-" + uidMap.get("version") + "-" + aid;
-//					String tempString = redisDAO.hGetValue(aidKey, dateTime);
-//					if (tempString != null) {
-//						if (tempString.charAt(0) == '[' && tempString.charAt(tempString.length() - 1) == ']') {
-//							tempString = tempString.substring(1, tempString.length() - 1);
-//						}
-//						valueString += tempString + ",";
-//					} else {
-//						if (redisDAO.keyExist(aidKey) == 0) {
-//							logger.info(requestIndex + " : hash key = " + aidKey + ", no exists!");
-//							List<DataInfo> dataInfos = dataDAO.getDataInfos(aidKey);
-//							if (dataInfos != null && dataInfos.size() > 0) {
-//								Map<String, String> dataMap = new HashMap<String, String>();
-//								for (DataInfo info : dataInfos) {
-//									dataMap.put(info.getField(), info.getCacheValue());
-//									if (dateTime.compareToIgnoreCase(info.getField()) <= 0
-//											&& currentDate.compareToIgnoreCase(info.getField()) >= 0) {
-//										tempString = info.getCacheValue();
-//										if (tempString.charAt(0) == '['
-//												&& tempString.charAt(tempString.length() - 1) == ']') {
-//											tempString = tempString.substring(1, tempString.length() - 1);
-//										}
-//										valueString += tempString + ",";
-//									}
-//								}
-//								redisDAO.hMsetAndZadd(aidKey, dataMap);
-//							} else {
-//								logger.info(
-//										requestIndex + " : aid key = " + aidKey + " card data no exist in data cache");
-//							}
-//						} else {
-//							logger.info(requestIndex + " : aid key = " + aidKey + " redis key exist, but no data");
-//						}
-//					}
-//				}
+				// String currentDate = DateUtil.getCurrentDate();
+				// for (String aid : list) {
+				// String aidKey = uidMap.get("channel") + "-" +
+				// uidMap.get("version") + "-" + aid;
+				// String tempString = redisDAO.hGetValue(aidKey, dateTime);
+				// if (tempString != null) {
+				// if (tempString.charAt(0) == '[' &&
+				// tempString.charAt(tempString.length() - 1) == ']') {
+				// tempString = tempString.substring(1, tempString.length() -
+				// 1);
+				// }
+				// valueString += tempString + ",";
+				// } else {
+				// if (redisDAO.keyExist(aidKey) == 0) {
+				// logger.info(requestIndex + " : hash key = " + aidKey + ", no
+				// exists!");
+				// List<DataInfo> dataInfos = dataDAO.getDataInfos(aidKey);
+				// if (dataInfos != null && dataInfos.size() > 0) {
+				// Map<String, String> dataMap = new HashMap<String, String>();
+				// for (DataInfo info : dataInfos) {
+				// dataMap.put(info.getField(), info.getCacheValue());
+				// if (dateTime.compareToIgnoreCase(info.getField()) <= 0
+				// && currentDate.compareToIgnoreCase(info.getField()) >= 0) {
+				// tempString = info.getCacheValue();
+				// if (tempString.charAt(0) == '['
+				// && tempString.charAt(tempString.length() - 1) == ']') {
+				// tempString = tempString.substring(1, tempString.length() -
+				// 1);
+				// }
+				// valueString += tempString + ",";
+				// }
+				// }
+				// redisDAO.hMsetAndZadd(aidKey, dataMap);
+				// } else {
+				// logger.info(
+				// requestIndex + " : aid key = " + aidKey + " card data no
+				// exist in data cache");
+				// }
+				// } else {
+				// logger.info(requestIndex + " : aid key = " + aidKey + " redis
+				// key exist, but no data");
+				// }
+				// }
+				// }
 				if (valueString.length() > 0) {
 					valueString = "[" + valueString.substring(0, valueString.length() - 1) + "]";
 				} else {

@@ -43,8 +43,25 @@ public class DateUtil {
 		return str;
 	}
 
+	public static String getYearEndLongTime() {
+		Calendar cd = Calendar.getInstance();
+		int i = cd.get(Calendar.YEAR);
+		String year = Integer.toString(i);
+		String yearEnd = year + "-12-31";
+		Date parse = null;
+		try {
+			parse = new SimpleDateFormat("yyyy-MM-dd").parse(yearEnd);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String yearLong = Long.toString(parse.getTime());
+		return yearLong;
+	}
+
 	public static void main(String[] args) {
 		System.out.println(getCurrentDate());
 		System.out.println(getCurrentTime());
+		String yearEndLongTime = getYearEndLongTime();
+		System.out.println(yearEndLongTime);
 	}
 }
