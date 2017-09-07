@@ -39,7 +39,7 @@ public class BindControlDriveCityBOImpl implements BindControlDriveCityBO {
 
 		do {
 			if (!ParameterValidation.validationUidAndToken(token)
-					|| !ParameterValidation.validationAidsAndAidAndType(aids)
+					//|| !ParameterValidation.validationAidsAndAidAndType(aids)
 					|| !ParameterValidation.validationDateTime(dateTime)) {
 				appResponse.setCode(EnumConstants.CALENDAR_ERROR_400);
 				logger.error(requestIndex + " : param error, return 400");
@@ -58,7 +58,7 @@ public class BindControlDriveCityBOImpl implements BindControlDriveCityBO {
 				Map<String, String> uidMap = redisDAO.hGetAll(uid);
 				String usercity = uidMap.get("usercity");
 				if (aids != usercity) {
-					redisDAO.hSetValue(uid, usercity, aids);
+					redisDAO.hSetValue(uid, "usercity", aids);
 				}
 				valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, aids);
 
