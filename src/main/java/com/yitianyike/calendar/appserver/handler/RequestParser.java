@@ -38,6 +38,7 @@ public class RequestParser {
 
 	private static List<String> paramList = new ArrayList<String>();
 	static {
+		paramList.add("num");
 		paramList.add("uid");
 		paramList.add("uuid");
 		paramList.add("thirdid");

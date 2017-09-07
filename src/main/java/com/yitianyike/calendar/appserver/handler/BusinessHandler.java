@@ -139,6 +139,11 @@ public class BusinessHandler extends SimpleChannelInboundHandler<HttpObject> {
 
 				new BindControlDriveCityHandler(ctx, parmMap, content).process();
 				return;
+				// v1
+			} else if ("/moreData".equals(accessPath)) {
+
+				new MoreDataHandler(ctx, parmMap, content).process();
+				return;
 			} else if ("/incrementData".equals(accessPath)) {
 
 				new IncrementDataHandler(ctx, parmMap, content).process();

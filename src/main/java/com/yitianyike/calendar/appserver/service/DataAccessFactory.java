@@ -16,6 +16,7 @@ import com.yitianyike.calendar.appserver.bo.GetSportsDataDB;
 import com.yitianyike.calendar.appserver.bo.IncrementDataBO;
 import com.yitianyike.calendar.appserver.bo.LoginBO;
 import com.yitianyike.calendar.appserver.bo.MergeSubscriptionsBO;
+import com.yitianyike.calendar.appserver.bo.MoreDataBO;
 import com.yitianyike.calendar.appserver.bo.RecommendSubscribeListBO;
 import com.yitianyike.calendar.appserver.bo.RegisterBO;
 import com.yitianyike.calendar.appserver.bo.SubscribeBO;
@@ -79,6 +80,7 @@ public class DataAccessFactory {
 		dataHolder.put("bindPushBO", (BindPushBO) mysqlUserCtxXml.getBean("bindPushBO"));
 		dataHolder.put("unbindPushBO", (UnbindPushBO) mysqlUserCtxXml.getBean("unbindPushBO"));
 		dataHolder.put("currentDataBO", (CurrentDataBO) mysqlUserCtxXml.getBean("currentDataBO"));
+		dataHolder.put("moreDataBO", (MoreDataBO) mysqlUserCtxXml.getBean("moreDataBO"));
 		dataHolder.put("bindControlDriveCityBO",
 				(BindControlDriveCityBO) mysqlUserCtxXml.getBean("bindControlDriveCityBO"));
 		// TODO

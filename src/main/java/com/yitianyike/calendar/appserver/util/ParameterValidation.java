@@ -41,6 +41,10 @@ public class ParameterValidation {
 		return (StringUtils.isNotBlank(at) && at.replace(" ", "").matches("[0-9]*"));
 	};
 
+	//验证num
+	public static boolean validationNum(String at) {
+		return (StringUtils.isNotBlank(at) && at.matches("[0-9]*"));
+	};
 	// 传递的时间
 	public static boolean validationDateTime(String dateTime) {
 		return (StringUtils.isNotBlank(dateTime) && dateTime.replace("-", "").matches("[0-9]{8}"));
