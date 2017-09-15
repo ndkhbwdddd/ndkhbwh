@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.yitianyike.calendar.appserver.dao.UserDAO;
 import com.yitianyike.calendar.appserver.model.AuthAccount;
 import com.yitianyike.calendar.appserver.model.DeviceInfo;
+import com.yitianyike.calendar.appserver.model.UserSub;
 import com.yitianyike.calendar.appserver.util.CalendarUtil;
 
 @Component("userDAO")
@@ -113,15 +114,49 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 	public int saveSubscribeId(String uid, String columnId, int type) {
 		int index = CalendarUtil.getSubscribeTableIndex(uid);
 		String table = "user_subscribe" + index;
-		StringBuilder sb = new StringBuilder();
-		sb.append("insert into " + table + "(uid, type, column_id, create_time) values(?, ?, ?, ?)");
-		Object[] objs = new Object[] { uid, type, columnId, System.currentTimeMillis() };
-		try {
-			return this.getJdbcTemplate().update(sb.toString(), objs);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
+		// 查看是否存在此订阅项,存在update不存在save
+		int count = haveThisColumnId(uid, columnId, table);
+		if (count > 0) {
+			String deleteSql = "UPDATE " + table + " SET type=:type WHERE uid=:uid AND column_id=:column_id ";
+			Map<String, Object> deleteMap = new HashMap<String, Object>();
+			deleteMap.put("uid", uid);
+			deleteMap.put("type", type);
+			deleteMap.put("column_id", columnId);
+			return this.getNamedParameterJdbcTemplate().update(deleteSql, deleteMap);
+
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append("insert into " + table + "(uid, type, column_id, create_time) values(?, ?, ?, ?)");
+			Object[] objs = new Object[] { uid, type, columnId, System.currentTimeMillis() };
+			try {
+				return this.getJdbcTemplate().update(sb.toString(), objs);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+
 		}
+
+	}
+
+	private int haveThisColumnId(String uid, String columnId, String table) {
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT id FROM " + table + " WHERE uid=:uid AND column_id=:column_id");
+		paramMap.put("uid", uid);
+		paramMap.put("column_id", columnId);
+		List<String> list = this.getNamedParameterJdbcTemplate().query(sb.toString(), paramMap,
+				new RowMapper<String>() {
+					@Override
+					public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+						return rs.getString("id");
+					}
+
+				});
+		return list.size();
+
 	}
 
 	@Override
@@ -241,11 +276,72 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 		int userIndex = CalendarUtil.getUserTableIndex(uid);
 		String userTable = "user_device_info" + userIndex;
 
-		String update = "update " + userTable + " set status = :status "
-				+ " where uid  = :uid ";
+		String update = "update " + userTable + " set status = :status " + " where uid  = :uid ";
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("status", status);
 		paramMap.put("uid", uid);
 		return this.getNamedParameterJdbcTemplate().update(update, paramMap);
+	}
+
+	@Override
+	public int updateSubscribeId(String uid, String columnId, int type) {
+		int index = CalendarUtil.getSubscribeTableIndex(uid);
+		String table = "user_subscribe" + index;
+
+		String deleteSql = "UPDATE " + table + " SET type=:type WHERE uid=:uid AND column_id=:column_id ";
+		Map<String, Object> deleteMap = new HashMap<String, Object>();
+		deleteMap.put("uid", uid);
+		deleteMap.put("type", type);
+		deleteMap.put("column_id", columnId);
+		return this.getNamedParameterJdbcTemplate().update(deleteSql, deleteMap);
+
+	}
+
+	@Override
+	public List<UserSub> getSubscribeListIncludeType(String uid) {
+		int subscribeIndex = CalendarUtil.getSubscribeTableIndex(uid);
+		String subscribeTable = "user_subscribe" + subscribeIndex;
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+
+		String selectSql = "select column_id,type from " + subscribeTable + " where uid = :uid ";
+		paramMap.put("uid", uid);
+
+		List<UserSub> list = this.getNamedParameterJdbcTemplate().query(selectSql, paramMap, new RowMapper<UserSub>() {
+			@Override
+			public UserSub mapRow(ResultSet rs, int rowNum) throws SQLException {
+				UserSub us = new UserSub();
+				String column_id = "" + rs.getInt("column_id");
+				String type = "" + rs.getInt("type");
+				us.setColumn_id(column_id);
+				us.setType(type);
+				return us;
+			}
+
+		});
+		return list;
+	}
+
+	@Override
+	public int batchSaveSubscribeId(String uid, Set<String> default_aids_valid, int i) {
+		int index = CalendarUtil.getSubscribeTableIndex(uid);
+		String table = "user_subscribe" + index;
+		StringBuilder sb = new StringBuilder();
+		sb.append("insert into " + table + "(uid, type, column_id, create_time) values(?, ?, ?, ?)");
+
+		List<Object[]> batchList = new ArrayList<Object[]>();
+
+		for (String default_aid : default_aids_valid) {
+			Object[] objs = new Object[] { uid, i, default_aid, System.currentTimeMillis() };
+			batchList.add(objs);
+		}
+
+		try {
+			this.getJdbcTemplate().batchUpdate(sb.toString(), batchList);
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

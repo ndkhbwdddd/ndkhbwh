@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 
 public class DateUtil {
@@ -59,9 +61,18 @@ public class DateUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getCurrentDate());
-		System.out.println(getCurrentTime());
-		String yearEndLongTime = getYearEndLongTime();
-		System.out.println(yearEndLongTime);
+//		System.out.println(getCurrentDate());
+//		System.out.println(getCurrentTime());
+//		String yearEndLongTime = getYearEndLongTime();
+//		System.out.println(yearEndLongTime);
+		
+		Set<String> validsubs = new HashSet<String>();
+		validsubs.add("1");
+		Set<String> default_aids_valid = new HashSet<String>();
+		default_aids_valid.add("2");
+		default_aids_valid.add("3");
+		validsubs.addAll(default_aids_valid);
+		System.out.println(validsubs);
+		System.out.println(default_aids_valid);
 	}
 }

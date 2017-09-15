@@ -18,27 +18,19 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yitianyike.calendar.appserver.bo.SubscribeBO;
 import com.yitianyike.calendar.appserver.common.EnumConstants;
-import com.yitianyike.calendar.appserver.dao.DataDAO;
 import com.yitianyike.calendar.appserver.dao.RedisDAO;
 import com.yitianyike.calendar.appserver.dao.UserDAO;
-import com.yitianyike.calendar.appserver.model.DataInfo;
 import com.yitianyike.calendar.appserver.model.response.AppResponse;
 import com.yitianyike.calendar.appserver.service.DBContextHolder;
 import com.yitianyike.calendar.appserver.service.DataAccessFactory;
 import com.yitianyike.calendar.appserver.util.CalendarUtil;
 import com.yitianyike.calendar.appserver.util.DateUtil;
+import com.yitianyike.calendar.appserver.util.MapUtil;
 import com.yitianyike.calendar.appserver.util.ParameterValidation;
-import com.yitianyike.calendar.appserver.util.PushRet;
-import com.yitianyike.calendar.appserver.util.PushUtil;
 
-/**
- * @author xujinbo
- *
- */
 @Component("subscribeBO")
 public class SubscribeBOImpl implements SubscribeBO {
 
@@ -47,7 +39,6 @@ public class SubscribeBOImpl implements SubscribeBO {
 	@Autowired
 	private UserDAO userDAO;
 
-	private DataDAO dataDAO = (DataDAO) DataAccessFactory.dataHolder().get("dataDAO");
 	private RedisDAO redisDAO = (RedisDAO) DataAccessFactory.dataHolder().get("redisDAO");
 
 	@Override
@@ -86,6 +77,8 @@ public class SubscribeBOImpl implements SubscribeBO {
 			String uid = tokenMap.get("uid");
 			if (uid != null) {
 
+				/// 返回该订阅项数据
+
 				Map<String, String> uidMap = redisDAO.hGetAll(uid);
 
 				// =============================单点登录==================
@@ -123,7 +116,7 @@ public class SubscribeBOImpl implements SubscribeBO {
 
 				if (exists == 0) {// 用户未订阅此订阅项
 					List<String> columnList = null;
-					userDAO.saveSubscribeId(uid, columnId, 0);
+					userDAO.saveSubscribeId(uid, columnId, 1);
 					if (list == null) {
 						columnList = new ArrayList<String>();
 					} else {
@@ -131,7 +124,34 @@ public class SubscribeBOImpl implements SubscribeBO {
 					}
 					columnList.add(columnId);
 					DBContextHolder.clearDBType();
-					redisDAO.hsetColumnList(uid, columnList);
+
+					String key = uidMap.get("channel") + "-" + uidMap.get("version") + "-subscribed";
+
+					String field = uidMap.get("channel") + "-" + uidMap.get("version") + "-subscribed-order";
+					String aidsOrderString = redisDAO.hGetValue(key, field);
+					// orderMap
+					Map<String, String> orderMap = new HashMap<String, String>();
+					if (StringUtils.isNotBlank(aidsOrderString)) {
+						List<String> aid_orders = java.util.Arrays.asList(aidsOrderString.split(","));
+						for (String aid_order : aid_orders) {
+							String[] aidOrder = aid_order.split("-");
+							if (aidOrder.length == 2) {
+								orderMap.put(aidOrder[0], aidOrder[1]);
+							}
+						}
+					}
+					// 用户订阅ordermap
+					Map<String, Integer> useSubOrderMap = new HashMap<String, Integer>();
+					for (String aid : columnList) {
+						if (orderMap.containsKey(aid)) {
+							String orderNum = orderMap.get(aid);
+							useSubOrderMap.put(aid, Integer.parseInt(orderNum));
+						} else {
+							useSubOrderMap.put(aid, 999);
+						}
+					}
+					List<String> sortColumnList = MapUtil.sortByValueAsc(useSubOrderMap);
+					redisDAO.hsetColumnList(uid, sortColumnList);
 				}
 				// if (exists == 0) {/// 用户未订阅该项
 				// /// 若type为星座类型，之前订阅的星座需要先删除

@@ -68,7 +68,6 @@ public class UnSubscribeBOImpl implements UnSubscribeBO {
 				break;
 			}
 
-
 			int redisIndex = CalendarUtil.getRedisIndex(token);
 			String redisTemplate = "redisTemplate" + redisIndex;
 			redisDAO.setRedisTemplate(redisTemplate);
@@ -116,7 +115,9 @@ public class UnSubscribeBOImpl implements UnSubscribeBO {
 					int dbIndex = CalendarUtil.getDbIndex(uid);
 					String dataSource = "dataSource" + dbIndex;
 					DBContextHolder.setDBType(dataSource);
-					userDAO.delSubscribeId(uid, columnId);
+					// userDAO.delSubscribeId(uid, columnId);
+					int type = 0;
+					userDAO.updateSubscribeId(uid, columnId, type);
 					DBContextHolder.clearDBType();
 
 					List<String> columnList = new ArrayList<String>(list);

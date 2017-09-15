@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.yitianyike.calendar.appserver.model.AuthAccount;
 import com.yitianyike.calendar.appserver.model.DeviceInfo;
+import com.yitianyike.calendar.appserver.model.UserSub;
 
 public interface UserDAO {
 	public AuthAccount getAccountInfo(String uid);
@@ -33,4 +34,13 @@ public interface UserDAO {
 	public int saveDevicetoken(String uid, String devicetoken, int status);
 
 	public int updateDevicetokenStatusByUid(String uid, int status);
+
+	// 修改用户订阅的频道的type为0
+	public int updateSubscribeId(String uid, String columnId, int type);
+
+	// 获取包含type的用户订阅项
+	public List<UserSub> getSubscribeListIncludeType(String uid);
+
+	// 批量存储订阅项
+	public int batchSaveSubscribeId(String uid, Set<String> default_aids_valid, int i);
 }

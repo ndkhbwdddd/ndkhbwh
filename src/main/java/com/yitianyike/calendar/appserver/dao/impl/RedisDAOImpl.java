@@ -559,13 +559,15 @@ public class RedisDAOImpl implements RedisDAO {
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {
 
 				byte[] keyb = key.getBytes();
-				//byte[] zkeyb = (key + "-zset").getBytes();
+				// byte[] zkeyb = (key + "-zset").getBytes();
 
 				try {
 					connection.multi();
 					for (Entry<String, String> entry : map.entrySet()) {
 						connection.hSet(keyb, entry.getKey().getBytes(), entry.getValue().getBytes());
-						//connection.zAdd(zkeyb, Integer.parseInt(entry.getKey()), entry.getKey().getBytes());
+						// connection.zAdd(zkeyb,
+						// Integer.parseInt(entry.getKey()),
+						// entry.getKey().getBytes());
 					}
 
 					connection.exec();
@@ -757,6 +759,39 @@ public class RedisDAOImpl implements RedisDAO {
 			}
 		});
 		return ret;
+	}
+
+	@Override
+	public int processTokenAndUidAndSubsForMulti(final String uid, final String newToken,
+			final Map<String, String> uidMap, final String time) {
+		Long ret = contextHolder.get().execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+
+				byte[] uidKeyb = uid.getBytes();
+				byte[] newTokenKeyb = newToken.getBytes();
+				int seconds = Integer.parseInt(time);
+
+				try {
+					connection.multi();
+					connection.hSet(newTokenKeyb, "uid".getBytes(), uidKeyb);
+					for (Entry<String, String> entry : uidMap.entrySet()) {
+						connection.hSet(uidKeyb, entry.getKey().getBytes(), entry.getValue().getBytes());
+					}
+
+					if (seconds > 0) {
+						connection.expire(uidKeyb, seconds);
+						connection.expire(newTokenKeyb, seconds);
+					}
+					connection.exec();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0L;
+				}
+
+				return 1L;
+			}
+		});
+		return ret.intValue();
 	}
 
 }

@@ -69,7 +69,12 @@ public interface RedisDAO {
 
 	// 获取set中所有的数据
 	Set<String> sGetAll(final String key);
-	//根据key获取value
+
+	// 根据key获取value
 	String getValue(String aidKey);
+
+	// 登录生成数据放入缓存
+	int processTokenAndUidAndSubsForMulti(final String uid, final String token, final Map<String, String> uidMap,
+			final String time);
 
 }

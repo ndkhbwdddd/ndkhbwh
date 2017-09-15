@@ -62,9 +62,15 @@ public class MoreDataBOImpl implements MoreDataBO {
 			String valueString = "";
 			if (uid != null) {
 				Map<String, String> uidMap = redisDAO.hGetAll(uid);
-
 				// 获取所有非场景aid
-				valueString = getDataByAid(uidMap, requestIndex, aids, num, dateTime, valueString);
+				Map<String, String> aidTypes = redisDAO
+						.hGetAll(uidMap.get("channel") + "-" + uidMap.get("version") + "-aidtype");
+				String datatype = aidTypes.get(aids);
+				if ("5".equals(datatype) || "8".equals(datatype) || "4".equals(datatype) || "66".equals(datatype)) {
+					valueString = getDataByAid(uidMap, requestIndex, aids, num, DateUtil.getCurrentDate(), valueString);
+				} else {
+					valueString = getDataByAid(uidMap, requestIndex, aids, num, dateTime, valueString);
+				}
 
 				if (valueString.length() > 0) {
 					valueString = "[" + valueString.substring(0, valueString.length() - 1) + "]";
