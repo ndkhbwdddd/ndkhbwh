@@ -144,6 +144,11 @@ public class BusinessHandler extends SimpleChannelInboundHandler<HttpObject> {
 
 				new MoreDataHandler(ctx, parmMap, content).process();
 				return;
+				// v1
+			} else if ("/channelCodes".equals(accessPath)) {
+
+				new ChannelCodesHandler(ctx, parmMap, content).process();
+				return;
 			} else if ("/incrementData".equals(accessPath)) {
 
 				new IncrementDataHandler(ctx, parmMap, content).process();

@@ -47,10 +47,13 @@ public class CurrentDataBOImpl implements CurrentDataBO {
 
 		do {
 			if (!ParameterValidation.validationUidAndToken(token)
-					|| !ParameterValidation.validationAidsAndAidAndType(aids)
 					|| !ParameterValidation.validationDateTime(dateTime)) {
 				appResponse.setCode(EnumConstants.CALENDAR_ERROR_400);
 				logger.error(requestIndex + " : param error, return 400");
+				break;
+			}
+			if (!ParameterValidation.validationAidsAndAidAndType(aids)) {
+				appResponse.setRespContent("[]");
 				break;
 			}
 

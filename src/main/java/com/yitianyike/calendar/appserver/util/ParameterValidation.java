@@ -27,7 +27,8 @@ public class ParameterValidation {
 	
 	// 渠道号
 	public static boolean validationChannelno(String channelno) {
-		return (StringUtils.isNotBlank(channelno) && channelno.matches("^[A-Za-z0-9]{1,20}$"));
+		return (StringUtils.isNotBlank(channelno));
+		// && channelno.matches("^[A-Za-z0-9]{1,20}$")
 	};
 
 

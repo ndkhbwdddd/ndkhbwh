@@ -10,6 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.yitianyike.calendar.appserver.bo.AllSubscribeListBO;
 import com.yitianyike.calendar.appserver.bo.BindControlDriveCityBO;
 import com.yitianyike.calendar.appserver.bo.BindPushBO;
+import com.yitianyike.calendar.appserver.bo.ChannelCodesBO;
 import com.yitianyike.calendar.appserver.bo.CurrentDataBO;
 import com.yitianyike.calendar.appserver.bo.DeleteSubscribedListBO;
 import com.yitianyike.calendar.appserver.bo.GetSportsDataDB;
@@ -81,6 +82,8 @@ public class DataAccessFactory {
 		dataHolder.put("unbindPushBO", (UnbindPushBO) mysqlUserCtxXml.getBean("unbindPushBO"));
 		dataHolder.put("currentDataBO", (CurrentDataBO) mysqlUserCtxXml.getBean("currentDataBO"));
 		dataHolder.put("moreDataBO", (MoreDataBO) mysqlUserCtxXml.getBean("moreDataBO"));
+		dataHolder.put("channelCodesBO", (ChannelCodesBO) mysqlUserCtxXml.getBean("channelCodesBO"));
+
 		dataHolder.put("bindControlDriveCityBO",
 				(BindControlDriveCityBO) mysqlUserCtxXml.getBean("bindControlDriveCityBO"));
 		// TODO
