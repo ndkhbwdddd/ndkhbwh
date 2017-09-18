@@ -149,6 +149,16 @@ public class BusinessHandler extends SimpleChannelInboundHandler<HttpObject> {
 
 				new ChannelCodesHandler(ctx, parmMap, content).process();
 				return;
+				// v1
+			} else if ("/clearUser".equals(accessPath)) {
+
+				new ClearUserHandler(ctx, parmMap, content).process();
+				return;
+				// v1
+			} else if ("/layerSub".equals(accessPath)) {
+
+				new LayerSubHandler(ctx, parmMap, content).process();
+				return;
 			} else if ("/incrementData".equals(accessPath)) {
 
 				new IncrementDataHandler(ctx, parmMap, content).process();
@@ -198,7 +208,6 @@ public class BusinessHandler extends SimpleChannelInboundHandler<HttpObject> {
 			} else if ("/unbindPush".equals(accessPath)) {
 				new UnbindPushHandler(ctx, parmMap, content).process();
 				return;
-
 			}
 
 			logger.info(EnumConstants.COLOR_RED + "not known uri: " + accessPath + EnumConstants.COLOR_NONE);

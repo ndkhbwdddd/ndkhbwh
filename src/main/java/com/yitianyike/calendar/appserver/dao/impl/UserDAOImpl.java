@@ -344,4 +344,27 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 			return 0;
 		}
 	}
+
+	@Override
+	public int deleteAuthAccountByUid(String uid) {
+
+		int userIndex = CalendarUtil.getUserTableIndex(uid);
+		String userTable = "user_info" + userIndex;
+
+		String deleteSql = "delete from " + userTable + " where uid = :uid ";
+		Map<String, Object> deleteMap = new HashMap<String, Object>();
+		deleteMap.put("uid", uid);
+		return this.getNamedParameterJdbcTemplate().update(deleteSql, deleteMap);
+
+	}
+
+	@Override
+	public int deleteUserSubscribeId(String uid) {
+		int index = CalendarUtil.getSubscribeTableIndex(uid);
+		String table = "user_subscribe" + index;
+		String deleteSql = "delete from " + table + " where uid = :uid";
+		Map<String, Object> deleteMap = new HashMap<String, Object>();
+		deleteMap.put("uid", uid);
+		return this.getNamedParameterJdbcTemplate().update(deleteSql, deleteMap);
+	}
 }

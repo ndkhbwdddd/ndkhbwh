@@ -83,4 +83,15 @@ public class RegisterDAOImpl extends BaseDAO implements RegisterDAO {
 		}
 	}
 
+	@Override
+	public int deleteRegisterInfoByUUID(String uuid) {
+		int registerIndex = 0;
+		registerIndex = CalendarUtil.getRegisterTableIndex(uuid);
+		String RegisterTable = "calendar_register.user_register" + registerIndex;
+		String deleteSql = "delete from " + RegisterTable + " where uuid = :uuid ";
+		Map<String, Object> deleteMap = new HashMap<String, Object>();
+		deleteMap.put("uuid", uuid);
+		return this.getNamedParameterJdbcTemplate().update(deleteSql, deleteMap);
+	}
+
 }

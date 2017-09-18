@@ -11,10 +11,12 @@ import com.yitianyike.calendar.appserver.bo.AllSubscribeListBO;
 import com.yitianyike.calendar.appserver.bo.BindControlDriveCityBO;
 import com.yitianyike.calendar.appserver.bo.BindPushBO;
 import com.yitianyike.calendar.appserver.bo.ChannelCodesBO;
+import com.yitianyike.calendar.appserver.bo.ClearUserBO;
 import com.yitianyike.calendar.appserver.bo.CurrentDataBO;
 import com.yitianyike.calendar.appserver.bo.DeleteSubscribedListBO;
 import com.yitianyike.calendar.appserver.bo.GetSportsDataDB;
 import com.yitianyike.calendar.appserver.bo.IncrementDataBO;
+import com.yitianyike.calendar.appserver.bo.LayerSubDataBO;
 import com.yitianyike.calendar.appserver.bo.LoginBO;
 import com.yitianyike.calendar.appserver.bo.MergeSubscriptionsBO;
 import com.yitianyike.calendar.appserver.bo.MoreDataBO;
@@ -83,7 +85,10 @@ public class DataAccessFactory {
 		dataHolder.put("currentDataBO", (CurrentDataBO) mysqlUserCtxXml.getBean("currentDataBO"));
 		dataHolder.put("moreDataBO", (MoreDataBO) mysqlUserCtxXml.getBean("moreDataBO"));
 		dataHolder.put("channelCodesBO", (ChannelCodesBO) mysqlUserCtxXml.getBean("channelCodesBO"));
+		dataHolder.put("clearUserBO", (ClearUserBO) mysqlUserCtxXml.getBean("clearUserBO"));
+		dataHolder.put("layerSubDataBO", (LayerSubDataBO) mysqlUserCtxXml.getBean("layerSubDataBO"));
 
+		//
 		dataHolder.put("bindControlDriveCityBO",
 				(BindControlDriveCityBO) mysqlUserCtxXml.getBean("bindControlDriveCityBO"));
 		// TODO

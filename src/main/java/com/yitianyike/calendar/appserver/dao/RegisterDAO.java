@@ -10,4 +10,6 @@ public interface RegisterDAO {
 	public int updateThirdIdByUuid(String thirdId, String uuid);
 	
 	public int saveRegisterInfo(RegisterInfo registerInfo);
+
+	public int deleteRegisterInfoByUUID(String uuid);
 }

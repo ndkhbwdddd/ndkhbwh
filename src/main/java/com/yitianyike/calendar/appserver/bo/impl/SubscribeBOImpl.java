@@ -115,6 +115,10 @@ public class SubscribeBOImpl implements SubscribeBO {
 				}
 
 				if (exists == 0) {// 用户未订阅此订阅项
+					int dbIndex = CalendarUtil.getDbIndex(uid);
+					String dataSource = "dataSource" + dbIndex;
+					DBContextHolder.setDBType(dataSource);
+					
 					List<String> columnList = null;
 					userDAO.saveSubscribeId(uid, columnId, 1);
 					if (list == null) {

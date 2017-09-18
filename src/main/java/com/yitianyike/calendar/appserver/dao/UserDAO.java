@@ -43,4 +43,10 @@ public interface UserDAO {
 
 	// 批量存储订阅项
 	public int batchSaveSubscribeId(String uid, Set<String> default_aids_valid, int i);
+
+	// 删除用户信息
+	public int deleteAuthAccountByUid(String uid);
+
+	// 删除用户订阅信息
+	public int deleteUserSubscribeId(String uid);
 }
