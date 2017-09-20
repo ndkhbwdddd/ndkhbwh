@@ -231,39 +231,39 @@ public class LoginBOImpl implements LoginBO {
 
 				
 				//排序
-				String key = uidMap.get("channel")+"-"+uidMap.get("version")+"-subscribed";
-
-				String field =uidMap.get("channel")+"-"+uidMap.get("version")+"-subscribed-order";
-				String aidsOrderString = redisDAO.hGetValue(key, field);
-				// orderMap
-				Map<String, String> orderMap = new HashMap<String, String>();
-				if (StringUtils.isNotBlank(aidsOrderString)) {
-					List<String> aid_orders = java.util.Arrays.asList(aidsOrderString.split(","));
-					for (String aid_order : aid_orders) {
-						String[] aidOrder = aid_order.split("-");
-						if (aidOrder.length == 2) {
-							orderMap.put(aidOrder[0], aidOrder[1]);
-						}
-					}
-				}
+//				String key = uidMap.get("channel")+"-"+uidMap.get("version")+"-subscribed";
+//
+//				String field =uidMap.get("channel")+"-"+uidMap.get("version")+"-subscribed-order";
+//				String aidsOrderString = redisDAO.hGetValue(key, field);
+//				// orderMap
+//				Map<String, String> orderMap = new HashMap<String, String>();
+//				if (StringUtils.isNotBlank(aidsOrderString)) {
+//					List<String> aid_orders = java.util.Arrays.asList(aidsOrderString.split(","));
+//					for (String aid_order : aid_orders) {
+//						String[] aidOrder = aid_order.split("-");
+//						if (aidOrder.length == 2) {
+//							orderMap.put(aidOrder[0], aidOrder[1]);
+//						}
+//					}
+//				}
 				// 用户订阅ordermap
-				Map<String, Integer> useSubOrderMap = new HashMap<String, Integer>();
-				for (String aid : validsubs) {
-					if (orderMap.containsKey(aid)) {
-						String orderNum = orderMap.get(aid);
-						useSubOrderMap.put(aid, Integer.parseInt(orderNum));
-					} else {
-						useSubOrderMap.put(aid, 999);
-					}
-				}
-				List<String> sortColumnList = MapUtil.sortByValueAsc(useSubOrderMap);
+//				Map<String, Integer> useSubOrderMap = new HashMap<String, Integer>();
+//				for (String aid : validsubs) {
+//					if (orderMap.containsKey(aid)) {
+//						String orderNum = orderMap.get(aid);
+//						useSubOrderMap.put(aid, Integer.parseInt(orderNum));
+//					} else {
+//						useSubOrderMap.put(aid, 999);
+//					}
+//				}
+//				List<String> sortColumnList = MapUtil.sortByValueAsc(useSubOrderMap);
 				
 				
 				
 				
 				String columnString = "";
 				if (validsubs != null) {
-					for (String id : sortColumnList) {
+					for (String id : validsubs) {
 						columnString += id + ",";
 					}
 				}

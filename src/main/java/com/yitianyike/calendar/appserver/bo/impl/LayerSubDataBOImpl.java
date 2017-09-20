@@ -11,7 +11,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yitianyike.calendar.appserver.bo.LayerSubDataBO;
 import com.yitianyike.calendar.appserver.common.EnumConstants;

@@ -93,19 +93,19 @@ public class MapUtil {
 	public static void main(String[] args) {
 		Map<String, Integer> ss = new HashMap<String, Integer>();
 		ss.put("1",1);
-		ss.put("2",3);
-		ss.put("3", 4);
-		ss.put("4",6);
-		ss.put("5", 12);
-		ss.put("6", 99);
-		ss.put("7", 24);
+		ss.put("2",1);
+		ss.put("3", 1);
+		ss.put("4",1);
+		ss.put("5", 1);
+		ss.put("6", 1);
+		ss.put("7", 1);
 		ss.put("8", 1);
-		ss.put("9", 2);
-		ss.put("10", 3);
-		ss.put("11", 4);
-		ss.put("12", 0);
-		List<Integer> sortByValueDesc = sortByValueAscReturnV(ss);
-		for (Integer string : sortByValueDesc) {
+		ss.put("9", 1);
+		ss.put("10", 1);
+		ss.put("11", 1);
+		ss.put("12", 1);
+		List<String> sortByValueDesc = sortByValueAsc(ss);
+		for (String string : sortByValueDesc) {
 			System.out.println(string);
 		}
 
