@@ -45,7 +45,6 @@
     <bean id="redisTemplate1" class="org.springframework.data.redis.core.RedisTemplate">  
     	<property name="connectionFactory"   ref="connectionFactory1" />
     </bean>	
-
 	<!-- 实体类-->
 	<bean id="redisDAO" class="com.yitianyike.calendar.appserver.dao.impl.RedisDAOImpl">
 	</bean>

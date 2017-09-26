@@ -83,10 +83,11 @@ public class CurrentDataBOImpl implements CurrentDataBO {
 							valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, "-1");
 						else
 							valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, usercity);
-					} else if ("2".equals(datatype) || "3".equals(datatype) || "4".equals(datatype)
-							|| "5".equals(datatype) || "8".equals(datatype) || "9".equals(datatype)
-							|| "10".equals(datatype) || "66".equals(datatype)) {
+					} else if ("3".equals(datatype) || "4".equals(datatype) || "9".equals(datatype)) {
 						valueString = getDataByAid(requestIndex, dateTime, valueString, uidMap, aid);
+					} else if ("2".equals(datatype) || "5".equals(datatype) || "8".equals(datatype)
+							|| "10".equals(datatype) || "66".equals(datatype)) {
+						valueString = getDataByAid(requestIndex, DateUtil.getCurrentDate(), valueString, uidMap, aid);
 					}
 				}
 
